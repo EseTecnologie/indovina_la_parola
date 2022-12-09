@@ -1,4 +1,5 @@
 package server;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,34 +12,45 @@ public class Server {
     static int numOfUsers = 0;
     Socket socket;
 
-    public Server(){
+    String wordToFind;
+
+    public Server() {
         clients = new ArrayList<>();
-        try{
+        try {
             serverSocket = new ServerSocket(Constants.PORT);
-        }catch(IOException ex){
+        } catch (IOException ex) {
             log("Server : " + ex.getMessage());
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Server server = new Server();
         server.watiConnection();
     }
 
-    private void watiConnection(){
+    private void watiConnection() {
         log("Server Running...");
-
-        while(true){
-            try{
+        while (true) {
+            try {
                 socket = serverSocket.accept();
-            }catch(IOException ex){
+            } catch (IOException ex) {
                 log("waitConnection : " + ex.getMessage());
             }
 
             log("Client accepted : " + socket.getInetAddress());
             numOfUsers++;
 
-            ClientHandler handler = new ClientHandler(socket, "user" + numOfUsers, clients);
+
+            try {
+                wordToFind = fileConnector.getRandomLineFromFile("src/server/parole.csv");
+            } catch (IOException e) {
+                System.out.println("Non è stato possibile trovare una parola");
+                System.out.println("Closing...");
+                throw new RuntimeException(e);
+            }
+            log("Client" + numOfUsers + " trova --> " + wordToFind);
+
+            ClientHandler handler = new ClientHandler(socket, "user" + numOfUsers, clients, wordToFind);
 
             Thread thread = new Thread(handler);
             addClient(handler);
@@ -47,14 +59,15 @@ public class Server {
     }
 
 
-    public  static List<ClientHandler> getClients(){
+    public static List<ClientHandler> getClients() {
         return clients;
     }
 
-    private void addClient(ClientHandler client){
+    private void addClient(ClientHandler client) {
         clients.add(client);
     }
+
     private void log(String message) {
-        System.out.println(message)        ;
+        System.out.println(message);
     }
 }
