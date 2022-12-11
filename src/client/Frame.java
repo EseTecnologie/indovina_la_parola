@@ -5,11 +5,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class primoFrame extends JFrame {
+public class Frame extends JFrame {
     JPanel panel ;
     JPanel gioco ;
     JPanel classifica;
-    primoFrame(){
+    Frame(){
         super("INDOVINA LA PAROLA");
             panel=new JPanel();
          JLabel label = new JLabel("INDOVINA LA PAROLA");
