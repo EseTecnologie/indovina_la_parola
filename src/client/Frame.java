@@ -9,8 +9,10 @@ public class Frame extends JFrame {
     JPanel panel ;
     JPanel gioco ;
     JPanel classifica;
-    Frame(){
+    client c=new client();
+    Frame(client c){
         super("INDOVINA LA PAROLA");
+        this.c=c;
             panel=new JPanel();
          JLabel label = new JLabel("INDOVINA LA PAROLA");
          label.setForeground(Color.red);
