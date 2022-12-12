@@ -321,7 +321,7 @@ public class Frame extends JFrame {
                     Nome.setText("Username:"+msg);
                     revalidate();
                     repaint();
-                    //c.writeMessageThread("#Username:"+msg);
+                    c.writeMessageThread("#username:"+msg);
                 }
             }
         });

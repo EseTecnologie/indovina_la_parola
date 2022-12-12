@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,16 +12,17 @@ import static java.lang.System.in;
 
 public class ClientHandler implements Runnable {
 
-    final Socket socket;
-    final Scanner scan;
-    String name;
-    int tentative;
-    boolean isLosggedIn;
-    boolean win;
-    List<ClientHandler> clients;
+    public String name;
+    public int tentative;
+    private boolean isLosggedIn;
+    private boolean win;
     private DataInputStream input;
     private DataOutputStream output;
-    private final String wordToFind;
+    private RankingManager rankingManager;
+    private final Socket socket;
+    private final Scanner scan;
+    private String wordToFind;
+    private final List<ClientHandler> clients;
 
     public ClientHandler(Socket socket, String name, List<ClientHandler> clients, String wordToFind) {
         this.socket = socket;
@@ -31,6 +33,7 @@ public class ClientHandler implements Runnable {
         this.wordToFind = wordToFind;
         this.tentative = 0;
         this.win = false;
+        this.rankingManager = new RankingManager();
 
         try {
             input = new DataInputStream(socket.getInputStream());
@@ -70,7 +73,21 @@ public class ClientHandler implements Runnable {
                     closeStreams();
                     break;
                 }
-
+                if(received.trim().substring(1).equalsIgnoreCase(Constants.NEW_GAME)){
+                    try {
+                        this.wordToFind = fileConnector.getRandomLineFromFile(Constants.WORDS_FILE_PATH);
+                        write(output, "Parola da trovare --> ;" + FindWordManager.convertToAsterisks(wordToFind, ""));
+                    } catch (IOException e) {
+                        log("Non è stato possibile trovare una parola");
+                        log("Closing...");
+                        throw new RuntimeException(e);
+                    }
+                    continue;
+                }
+                if(received.trim().substring(1).equalsIgnoreCase(Constants.CLASSIFICA)){
+                    write(output,rankingManager.getRankingInString());
+                    continue;
+                }
                 if (received.trim().substring(1,Constants.USERNAME.length()+1).equalsIgnoreCase(Constants.USERNAME)) {
                     String oldUsername = this.name;
                     this.name = received.substring((Constants.PREFIX + Constants.USERNAME).length());
@@ -98,6 +115,7 @@ public class ClientHandler implements Runnable {
             if (FindWordManager.checkWord(wordToFind, convertedToAsterix)) {
                 log("Client " + name + " win");
                 write(output, "win;" + convertedToAsterix + ";" + tentative);
+                rankingManager.addToRanking(name, tentative);
                 this.win = true;
                 return;
             }
@@ -154,7 +172,6 @@ public class ClientHandler implements Runnable {
             log("closeSocket : " + ex.getMessage());
         }
     }
-
     private void log(String msg) {
         System.out.println(msg);
     }
@@ -178,5 +195,28 @@ class FindWordManager {
             }
         }
         return toReturn.toString();
+    }
+}
+
+class RankingManager{
+    private ArrayList<String> ranking;
+
+    public RankingManager() {
+        this.ranking = new ArrayList<String>();;
+    }
+    public void addToRanking(String user, int score) {
+        this.ranking.add(score+";"+user);
+        //this.ranking.sort(score, user);
+    }
+
+    public ArrayList<String> getRanking() {
+        return ranking;
+    }
+    public String getRankingInString(){
+        String toReturn = "";
+        for (String s : ranking){
+            toReturn += s+"\n";
+        }
+        return toReturn;
     }
 }

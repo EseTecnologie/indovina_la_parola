@@ -11,7 +11,6 @@ public class Server {
     ServerSocket serverSocket;
     static int numOfUsers = 0;
     Socket socket;
-    final String wordsFilePath = "src/server/parole.csv";
 
     String wordToFind;
 
@@ -43,7 +42,7 @@ public class Server {
 
 
             try {
-                wordToFind = fileConnector.getRandomLineFromFile(wordsFilePath);
+                wordToFind = fileConnector.getRandomLineFromFile(Constants.WORDS_FILE_PATH);
             } catch (IOException e) {
                 log("Non è stato possibile trovare una parola");
                 log("Closing...");
