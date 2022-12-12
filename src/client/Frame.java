@@ -107,7 +107,7 @@ public class Frame extends JFrame {
         win.setForeground(Color.orange);
         win.setFont(new Font("Comic sans", Font.BOLD, 48));
         win.setHorizontalAlignment(JLabel.CENTER);
-        win.setBounds(300,280, 200, 30);
+        win.setBounds(300,280, 200, 35);
         gioco.add(win);
 
         String[] s=parola.split(";");
@@ -216,7 +216,7 @@ public class Frame extends JFrame {
         classifica.setLayout(null);
         classifica.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        String[] s=classi.split(";");
+        String[] s=classi.split("\n");
         for (int i=0;i<s.length;i++){
             if(i==0){
                 lPrimoposto.setText(s[i]);
