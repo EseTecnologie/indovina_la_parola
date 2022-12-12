@@ -61,8 +61,6 @@ public class ClientHandler implements Runnable {
             }
         }
 
-        write(output, "Parola da trovare --> ;" + FindWordManager.convertToAsterisks(wordToFind, wordToFind.substring(0,1)));
-
         while (true) {
             received = read();
             if(received.trim().charAt(0) == Constants.PREFIX) {
@@ -77,7 +75,7 @@ public class ClientHandler implements Runnable {
                     try {
                         this.wordToFind = fileConnector.getRandomLineFromFile(Constants.WORDS_FILE_PATH);
                         this.win = false;
-                        write(output, "Parola da trovare --> ;" + FindWordManager.convertToAsterisks(wordToFind, ""));
+                        write(output, "Parola da trovare --> ;" + FindWordManager.convertToAsterisks(wordToFind, wordToFind.substring(0,1)));
                     } catch (IOException e) {
                         log("Non è stato possibile trovare una parola");
                         log("Closing...");
