@@ -102,7 +102,7 @@ public class ClientHandler implements Runnable {
                 return;
             }
             tentative++;
-            write(output, convertedToAsterix);
+            write(output, "lose;" + convertedToAsterix + ";" + tentative);
         }
     }
 
