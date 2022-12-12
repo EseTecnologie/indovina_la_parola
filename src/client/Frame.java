@@ -318,7 +318,7 @@ public class Frame extends JFrame {
                     String msg = fUser.getText().trim();
                     panel.remove(fUser);
                     panel.remove(BUsername);
-                    Nome.setText("Username: "+msg);
+                    Nome.setText("Username:"+msg);
                     revalidate();
                     repaint();
                     //c.writeMessageThread("#Username:"+msg);
