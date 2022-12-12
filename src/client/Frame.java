@@ -173,14 +173,14 @@ public class Frame extends JFrame {
         lPodio3.setLocation(500,60);
         classifica.add(lPodio3);
 
-        JLabel lPrimoposto = new JLabel("Marco");
+        JLabel lPrimoposto = new JLabel("");
         lPrimoposto.setForeground(Color.red);
         lPrimoposto.setFont(new Font("Comic sans", Font.BOLD, 32));
         lPrimoposto.setBounds(325,120, 150, 50);
         lPrimoposto.setHorizontalAlignment(JLabel.CENTER);
         classifica.add(lPrimoposto);
 
-        JLabel lSecondoPosto = new JLabel("Luca");
+        JLabel lSecondoPosto = new JLabel("");
         lSecondoPosto.setForeground(Color.red);
         lSecondoPosto.setFont(new Font("Comic sans", Font.BOLD, 32));
         lSecondoPosto.setBounds(175,145, 150, 50);
@@ -188,7 +188,7 @@ public class Frame extends JFrame {
 
         classifica.add(lSecondoPosto);
 
-        JLabel lTerzoposto = new JLabel("Andrea");
+        JLabel lTerzoposto = new JLabel("");
         lTerzoposto.setForeground(Color.red);
         lTerzoposto.setFont(new Font("Comic sans", Font.BOLD, 32));
         lTerzoposto.setBounds(475,170, 150, 50);
@@ -196,9 +196,10 @@ public class Frame extends JFrame {
 
         classifica.add(lTerzoposto);
 
-        JTextArea textArea = new JTextArea ("Test");
+        JTextArea textArea = new JTextArea ("");
         textArea.setFont(new Font("Comic sans", Font.PLAIN, 16));
         textArea.setForeground(Color.red);
+        textArea.setEnabled(false);
         JScrollPane scroll = new JScrollPane (textArea,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
