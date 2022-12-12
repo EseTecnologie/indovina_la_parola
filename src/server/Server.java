@@ -11,11 +11,12 @@ public class Server {
     ServerSocket serverSocket;
     static int numOfUsers = 0;
     Socket socket;
-
     String wordToFind;
+    RankingManager rankingManager;
 
     public Server() {
         clients = new ArrayList<>();
+        rankingManager = new RankingManager();
         try {
             serverSocket = new ServerSocket(Constants.PORT);
         } catch (IOException ex) {
@@ -50,7 +51,7 @@ public class Server {
             }
             log("Client" + numOfUsers + " trova --> " + wordToFind);
 
-            ClientHandler handler = new ClientHandler(socket, "user" + numOfUsers, clients, wordToFind);
+            ClientHandler handler = new ClientHandler(socket, "user" + numOfUsers, clients, wordToFind, rankingManager);
 
             Thread thread = new Thread(handler);
             addClient(handler);
@@ -69,5 +70,44 @@ public class Server {
 
     private void log(String message) {
         System.out.println(message);
+    }
+}
+
+class RankingManager{
+    private ArrayList<Integer> ranking;
+    private ArrayList<String> usernames;
+
+    public RankingManager() {
+        this.ranking = new ArrayList<Integer>();
+        this.usernames = new ArrayList<String>();
+    }
+    public void addToRanking(String user, int score) {
+        this.ranking.add(score);
+        this.usernames.add(user);
+        bubbleSort(ranking, usernames);
+    }
+    public String getRankingInString(){
+        StringBuilder toReturn = new StringBuilder();
+        for (int i = 0; i < ranking.size(); i++){
+            toReturn.append(usernames.get(i)).append(";").append(ranking.get(i)).append(";\n");
+        }
+        return toReturn.toString();
+    }
+    private static void bubbleSort(ArrayList<Integer> arr , ArrayList<String> usernames){
+        int n = arr.size();
+        int temp1 = 0;
+        String temp2 = "";
+        for(int i=0; i < n; i++){
+            for(int j=1; j<(n-i);j++){
+                if(arr.get(j-1)>arr.get(j)){
+                    temp1 = arr.get(j-1);
+                    arr.set(j-1,arr.get(j));
+                    arr.set(j,temp1);
+                    temp2 = usernames.get(j-1);
+                    usernames.set(j-1,usernames.get(j));
+                    usernames.set(j,temp2);
+                }
+            }
+        }
     }
 }
