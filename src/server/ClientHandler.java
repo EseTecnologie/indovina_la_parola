@@ -65,6 +65,10 @@ public class ClientHandler implements Runnable {
 
         while (true) {
             received = read();
+            if(received.trim().equalsIgnoreCase("jolly")) {
+                this.win = true;
+                write(output, "final;"+wordToFind+";"+tentative);
+            }
             if(received.trim().charAt(0) == Constants.PREFIX) {
                 if (received.trim().substring(1).equalsIgnoreCase(Constants.LOGOUT)) {
                     this.isLosggedIn = false;
@@ -200,39 +204,40 @@ class FindWordManager {
 }
 
 class RankingManager{
-    private ArrayList<String> ranking;
+    private ArrayList<Integer> ranking;
+    private ArrayList<String> usernames;
 
     public RankingManager() {
-        this.ranking = new ArrayList<String>();;
+        this.ranking = new ArrayList<Integer>();
+        this.usernames = new ArrayList<String>();
     }
     public void addToRanking(String user, int score) {
-        this.ranking.add(score+";"+user);
-        //this.ranking.sort(score, user);
-    }
-
-    public ArrayList<String> getRanking() {
-        return ranking;
+        this.ranking.add(score);
+        this.usernames.add(user);
+        bubbleSort(ranking, usernames);
     }
     public String getRankingInString(){
-        String toReturn = "";
-        for (String s : ranking){
-            toReturn += s+"\n";
+        StringBuilder toReturn = new StringBuilder();
+        for (int i = 0; i < ranking.size(); i++){
+            toReturn.append(usernames.get(i)).append(";").append(ranking.get(i)).append(";\n");
         }
-        return toReturn;
+        return toReturn.toString();
     }
-
-/*    static void bubbleSort(int[] arr){
-        int n = arr.length;
-        int temp = 0;
-        for(int i=0; i < n; i++){  
-                 for(int j=1; j < (n-i); j++){  
-                          if(arr[j-1] > arr[j]){  
-                                 //swap elements  
-                                 temp = arr[j-1];  
-                                 arr[j-1] = arr[j];  
-                                 arr[j] = temp;  
-                         }  
-                          
-                 }  
-}*/
+    private static void bubbleSort(ArrayList<Integer> arr , ArrayList<String> usernames){
+        int n = arr.size();
+        int temp1 = 0;
+        String temp2 = "";
+        for(int i=0; i < n; i++){
+            for(int j=1; j<(n-i);j++){
+                if(arr.get(j-1)>arr.get(j)){
+                    temp1 = arr.get(j-1);
+                    arr.set(j-1,arr.get(j));
+                    arr.set(j,temp1);
+                    temp2 = usernames.get(j-1);
+                    usernames.set(j-1,usernames.get(j));
+                    usernames.set(j,temp2);
+                }
+            }
+        }
+    }
 }
