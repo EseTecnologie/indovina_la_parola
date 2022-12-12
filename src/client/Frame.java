@@ -21,14 +21,15 @@ public class Frame extends JFrame {
             public void paintComponent(Graphics g) {
                 Image img= null;
                 try {
-                    img = ImageIO.read(new File("resources/sfondoLettere.jpg"));
+                    img = ImageIO.read(new File("resources/LOGO.png"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
 
-                g.drawImage(img,0,0,null);
+                g.drawImage(img,400-250,225-151,null);
             }
         };
+      panel.setBackground(Color.white);
 
         JLabel Nome = new JLabel("Username:");
         Nome.setForeground(Color.red);
@@ -49,12 +50,6 @@ public class Frame extends JFrame {
         BUsername.setLocation(230,10);
         panel.add(BUsername);
 
-        JLabel label = new JLabel("INDOVINA LA PAROLA");
-         label.setForeground(Color.red);
-         label.setFont(new Font("Comic sans", Font.BOLD, 32));
-         Dimension size = label.getPreferredSize();
-         label.setBounds(400-size.width/2,150-size.height/2, size.width, size.height);
-         panel.add(label);
 
          JButton bPageGioco = new JButton("Gioca");
          bPageGioco.setSize(100,50);
@@ -130,10 +125,10 @@ public class Frame extends JFrame {
              public void actionPerformed(ActionEvent e){
                  getContentPane().removeAll();
                  classifica.removeAll();
-                 String msg="#classifica";
+                 /*String msg="#classifica";
                  c.writeMessageThread(msg);
-                 String result=c.readMessageThread();
-                 writeClassifica(result);
+                 String result=c.readMessageThread();*/
+                 writeClassifica("result");
                  getContentPane().add(classifica);
                  revalidate();
                  getContentPane().repaint();
@@ -154,8 +149,9 @@ public class Frame extends JFrame {
                     String msg = fUser.getText().trim();
                     panel.remove(fUser);
                     panel.remove(BUsername);
-                    Nome.setText(msg);
+                    Nome.setText("Username: "+msg);
                     revalidate();
+                    repaint();
                     //c.writeMessageThread("#Username:"+msg);
                 }
             }
