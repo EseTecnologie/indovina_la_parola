@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package client;
 
 import java.io.DataInputStream;
@@ -13,11 +7,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
-/**
- *
- *
- */
-public class Client {
+
+public class client {
 
     Scanner scan ;
     Socket socket = null;
@@ -25,7 +16,8 @@ public class Client {
     DataOutputStream output = null;
     InetAddress ip;
 
-    public Client(){
+
+    public client(){
         try{
             ip = InetAddress.getByName("localhost");
             socket = new Socket(ip,Constants.PORT);
@@ -39,15 +31,9 @@ public class Client {
         }catch(IOException ex){
             log("Client : " + ex.getMessage());
         }
+        readMessageThread();
 
     }
-
-    public static void main(String[] args){
-        Client client = new Client();
-        client.readMessageThread();
-        client.writeMessageThread();
-    }
-
     private void readMessageThread(){
         Thread readMessage = new Thread(new Runnable() {
 
@@ -64,26 +50,15 @@ public class Client {
                 }
             }
         });
-        readMessage.start();
+        readMessage.start ();
     }
 
-    private void writeMessageThread(){
-        Thread sendMessage = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                while(true){
-                    String msg = scan.nextLine();
-
+    private void writeMessageThread(String msg){
                     try{
                         output.writeUTF(msg);
                     }catch(IOException ex){
                         log("writeMessageThread : " + ex.getMessage());
                     }
-                }
-            }
-        });
-        sendMessage.start();
     }
 
     private void log(String msg){
