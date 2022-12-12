@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+
 public class Frame extends JFrame {
     JPanel panel ;
     JPanel gioco ;
@@ -29,47 +30,9 @@ public class Frame extends JFrame {
                 g.drawImage(img,400-250,225-151,null);
             }
         };
+      writeHome();
       panel.setBackground(Color.white);
 
-        JLabel Nome = new JLabel("Username:");
-        Nome.setForeground(Color.red);
-        Nome.setFont(new Font("Comic sans", Font.BOLD, 16));
-        Nome.setBounds(10,10, 200, 30);
-        panel.add(Nome);
-
-        JTextField fUser = new JTextField();
-        fUser.setSize(100,30);
-        fUser.setLocation(120,10);
-        panel.add(fUser);
-
-        JButton BUsername = new JButton("salva");
-        BUsername.setSize(85,30);
-        BUsername.setFont(new Font("Comic sans", Font.BOLD, 16));
-        BUsername.setForeground(Color.white);
-        BUsername.setBackground(Color.red);
-        BUsername.setLocation(230,10);
-        panel.add(BUsername);
-
-
-         JButton bPageGioco = new JButton("Gioca");
-         bPageGioco.setSize(100,50);
-         bPageGioco.setFont(new Font("Comic sans", Font.BOLD, 20));
-         bPageGioco.setForeground(Color.white);
-         bPageGioco.setBackground(Color.red);
-         bPageGioco.setLocation(650/2-100/2,400);
-         panel.add(bPageGioco);
-
-         JButton bClassifica =new JButton("Classifica");
-         bClassifica.setSize(150,50);
-         bClassifica.setFont(new Font("Comic sans", Font.BOLD, 20));
-         bClassifica.setForeground(Color.white);
-         bClassifica.setBackground(Color.red);
-         bClassifica.setLocation(950/2-100/2,400);
-         panel.add(bClassifica);
-
-         panel.setLayout(null);
-
-         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         gioco = new JPanel(){
             @Override
@@ -81,7 +44,15 @@ public class Frame extends JFrame {
                     throw new RuntimeException(e);
                 }
 
+                Image img2= null;
+                try {
+                    img2 = ImageIO.read(new File("resources/LOGO.png"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
                 g.drawImage(img,0,0,null);
+                g.drawImage(img2,0,0,130,100,null);
             }
         };
 
@@ -100,62 +71,6 @@ public class Frame extends JFrame {
 
         String parola=c.readMessageThread();
 
-
-         bPageGioco.addActionListener(new ActionListener(){
-             @Override
-            public void actionPerformed(ActionEvent e){
-                 getContentPane().removeAll();
-                 /*String msg="#parola";
-                 c.writeMessageThread(msg);
-                 String parola=c.readMessageThread();*/
-                 gioco.removeAll();
-                 String[] s=parola.split(";");
-                 writeGioco(s[1]);
-                 getContentPane().add(gioco);
-                 revalidate();
-                 getContentPane().repaint();
-
-
-            }
-
-         });
-
-         bClassifica.addActionListener(new ActionListener(){
-             @Override
-             public void actionPerformed(ActionEvent e){
-                 getContentPane().removeAll();
-                 classifica.removeAll();
-                 /*String msg="#classifica";
-                 c.writeMessageThread(msg);
-                 String result=c.readMessageThread();*/
-                 writeClassifica("result");
-                 getContentPane().add(classifica);
-                 revalidate();
-                 getContentPane().repaint();
-
-             }
-
-         });
-
-
-
-
-
-
-        BUsername.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                if(fUser.getText().trim()!="") {
-                    String msg = fUser.getText().trim();
-                    panel.remove(fUser);
-                    panel.remove(BUsername);
-                    Nome.setText("Username: "+msg);
-                    revalidate();
-                    repaint();
-                    //c.writeMessageThread("#Username:"+msg);
-                }
-            }
-        });
     }
     public void writeGioco(String parola){
         JLabel lableGioco = new JLabel("M***");
@@ -195,7 +110,8 @@ public class Frame extends JFrame {
         win.setBounds(300,280, 200, 30);
         gioco.add(win);
 
-        lableGioco.setText(parola);
+        String[] s=parola.split(";");
+        lableGioco.setText(s[1]);
         bGioco.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
@@ -280,13 +196,15 @@ public class Frame extends JFrame {
 
         classifica.add(lTerzoposto);
 
-        JLabel lElenco = new JLabel("elenco");
-        lElenco.setForeground(Color.red);
-        lElenco.setFont(new Font("Comic sans", Font.PLAIN, 16));
-        Dimension size2 = lElenco.getPreferredSize();
-        lElenco.setVerticalAlignment(JLabel.TOP);
-        lElenco.setBounds(40,250,800, 300);
-        classifica.add(lElenco);
+        JTextArea textArea = new JTextArea ("Test");
+        textArea.setFont(new Font("Comic sans", Font.PLAIN, 16));
+        textArea.setForeground(Color.red);
+        JScrollPane scroll = new JScrollPane (textArea,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        scroll.setSize(300,150);
+        scroll.setLocation(400-150,240);
+        classifica.add(scroll);
 
         classifica.setLayout(null);
         classifica.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -300,7 +218,7 @@ public class Frame extends JFrame {
             }else if(i==2){
                 lTerzoposto.setText(s[i]);
             }else{
-                lElenco.setText(lElenco.getText()+"\n"+s[i]);
+                textArea.setText(textArea.getText()+"\n"+s[i]);
             }
         }
 
@@ -313,6 +231,99 @@ public class Frame extends JFrame {
                 getContentPane().repaint();
             }
 
+        });
+    }
+
+    public void writeHome(){
+        JLabel Nome = new JLabel("Username:");
+        Nome.setForeground(Color.red);
+        Nome.setFont(new Font("Comic sans", Font.BOLD, 16));
+        Nome.setBounds(10,10, 200, 30);
+        panel.add(Nome);
+
+        JTextField fUser = new JTextField();
+        fUser.setSize(100,30);
+        fUser.setLocation(120,10);
+        panel.add(fUser);
+
+        JButton BUsername = new JButton("salva");
+        BUsername.setSize(85,30);
+        BUsername.setFont(new Font("Comic sans", Font.BOLD, 16));
+        BUsername.setForeground(Color.white);
+        BUsername.setBackground(Color.red);
+        BUsername.setLocation(230,10);
+        panel.add(BUsername);
+
+
+        JButton bPageGioco = new JButton("Gioca");
+        bPageGioco.setSize(100,50);
+        bPageGioco.setFont(new Font("Comic sans", Font.BOLD, 20));
+        bPageGioco.setForeground(Color.white);
+        bPageGioco.setBackground(Color.red);
+        bPageGioco.setLocation(650/2-100/2,400);
+        panel.add(bPageGioco);
+
+        JButton bClassifica =new JButton("Classifica");
+        bClassifica.setSize(150,50);
+        bClassifica.setFont(new Font("Comic sans", Font.BOLD, 20));
+        bClassifica.setForeground(Color.white);
+        bClassifica.setBackground(Color.red);
+        bClassifica.setLocation(950/2-100/2,400);
+        panel.add(bClassifica);
+
+        panel.setLayout(null);
+
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+
+        bPageGioco.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                getContentPane().removeAll();
+                 String msg="#parola";
+                 c.writeMessageThread(msg);
+                 String parola=c.readMessageThread();
+                gioco.removeAll();
+                writeGioco(parola);
+                getContentPane().add(gioco);
+                revalidate();
+                getContentPane().repaint();
+
+
+            }
+
+        });
+
+        bClassifica.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                getContentPane().removeAll();
+                classifica.removeAll();
+                 String msg="#classifica";
+                 c.writeMessageThread(msg);
+                 String result=c.readMessageThread();
+                writeClassifica(result);
+                getContentPane().add(classifica);
+                revalidate();
+                getContentPane().repaint();
+
+            }
+
+        });
+
+        BUsername.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if(fUser.getText().trim()!="") {
+                    String msg = fUser.getText().trim();
+                    panel.remove(fUser);
+                    panel.remove(BUsername);
+                    Nome.setText("Username: "+msg);
+                    revalidate();
+                    repaint();
+                    //c.writeMessageThread("#Username:"+msg);
+                }
+            }
         });
     }
 }
