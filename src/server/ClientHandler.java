@@ -76,6 +76,7 @@ public class ClientHandler implements Runnable {
                 if(received.trim().substring(1).equalsIgnoreCase(Constants.NEW_GAME)){
                     try {
                         this.wordToFind = fileConnector.getRandomLineFromFile(Constants.WORDS_FILE_PATH);
+                        this.win = false;
                         write(output, "Parola da trovare --> ;" + FindWordManager.convertToAsterisks(wordToFind, ""));
                     } catch (IOException e) {
                         log("Non è stato possibile trovare una parola");
