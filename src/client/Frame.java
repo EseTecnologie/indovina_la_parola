@@ -218,14 +218,16 @@ public class Frame extends JFrame {
 
         String[] s=classi.split("\n");
         for (int i=0;i<s.length;i++){
+           String part[]=s[i].split(";");
             if(i==0){
-                lPrimoposto.setText(s[i]);
+
+                lPrimoposto.setText(part[0]+" n° "+part[1]);
             }else if(i==1){
-                lSecondoPosto.setText(s[i]);
+                lSecondoPosto.setText(part[0]+" n° "+part[1]);
             }else if(i==2){
-                lTerzoposto.setText(s[i]);
+                lTerzoposto.setText(part[0]+" n° "+part[1]);
             }else{
-                textArea.setText(textArea.getText()+"\n"+s[i]);
+                textArea.setText(textArea.getText()+"\n"+part[0]+" n° "+part[1]);
             }
         }
 
