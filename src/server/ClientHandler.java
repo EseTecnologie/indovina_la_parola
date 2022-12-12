@@ -135,14 +135,12 @@ public class ClientHandler implements Runnable {
         try {
             line = input.readUTF();
         } catch (IOException ex) {
-            if (ex.getMessage().equals("Broken pipe")) {
                 isLosggedIn = false;
                 log("Client " + name + " logged out");
                 closeSocket();
                 closeStreams();
+                log("read : " + ex.getMessage());
                 return "";
-            }
-            log("read : " + ex.getMessage());
         }
         return line;
     }
