@@ -127,6 +127,12 @@ public class Frame extends JFrame {
                         gioco.remove(bGioco);
                         revalidate();
                         repaint();
+                    }else if(s[0].trim().equals("final")){
+                        win.setText("Jolly");
+                        f.setEnabled(false);
+                        gioco.remove(bGioco);
+                        revalidate();
+                        repaint();
                     }
                 }
 
