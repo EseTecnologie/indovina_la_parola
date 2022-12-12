@@ -1,25 +1,45 @@
 package client;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Frame extends JFrame {
     JPanel panel ;
     JPanel gioco ;
     JPanel classifica;
-    client c=new client();
-    Frame(client c){
+    client c;
+    Frame(){
         super("INDOVINA LA PAROLA");
-        this.c=c;
-            panel=new JPanel();
+        client c= new client();
+      panel = new JPanel(){
+            @Override
+            public void paintComponent(Graphics g) {
+                Image img= null;
+                try {
+                    img = ImageIO.read(new File("resources/sfondoLettere.jpg"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                g.drawImage(img,0,0,null);
+            }
+        };
+
          JLabel label = new JLabel("INDOVINA LA PAROLA");
          label.setForeground(Color.red);
          label.setFont(new Font("Comic sans", Font.BOLD, 32));
          Dimension size = label.getPreferredSize();
          label.setBounds(400-size.width/2,150-size.height/2, size.width, size.height);
-        JButton button = new JButton("Gioca");
+         panel.add(label);
+
+         JButton button = new JButton("Gioca");
          button.setSize(100,50);
          button.setFont(new Font("Comic sans", Font.BOLD, 20));
          button.setForeground(Color.white);
@@ -36,15 +56,27 @@ public class Frame extends JFrame {
          panel.add(b);
 
          panel.setLayout(null);
-         panel.add(label);
+
          panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        gioco = new JPanel();
+        gioco = new JPanel(){
+            @Override
+            public void paintComponent(Graphics g) {
+                Image img= null;
+                try {
+                    img = ImageIO.read(new File("resources/palco.jpg"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                g.drawImage(img,0,0,null);
+            }
+        };
         JLabel lableGioco = new JLabel("M***");
         lableGioco.setForeground(Color.red);
         lableGioco.setFont(new Font("Comic sans", Font.BOLD, 32));
         lableGioco.setHorizontalAlignment(JLabel.CENTER);
-        lableGioco.setBounds(300,150, 200, 30);
+        lableGioco.setBounds(300,200, 200, 30);
 
         JButton bGioco = new JButton("invia");
         bGioco.setSize(100,50);
@@ -66,7 +98,7 @@ public class Frame extends JFrame {
         gioco.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         JTextField f = new JTextField();
-        f.setSize(300,40);
+        f.setSize(300,50);
         f.setLocation(200,400);
         gioco.add(f);
 
@@ -133,6 +165,8 @@ public class Frame extends JFrame {
         classifica.setLayout(null);
         classifica.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
+
+
          getContentPane().add(panel);
          setSize(800,500);
          setLocationRelativeTo(null);
@@ -183,5 +217,21 @@ public class Frame extends JFrame {
             }
 
         });
+
+        bGioco.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if(f.getText().trim()!=""){
+                    String msg=f.getText().trim();
+                    c.writeMessageThread(msg);
+
+                    String result=c.readMessageThread();
+                    
+                }
+            }
+
+        });
     }
+
+
 }
