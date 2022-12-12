@@ -58,7 +58,7 @@ public class ClientHandler implements Runnable {
             }
         }
 
-        write(output, "Parola da trovare --> " + FindWordManager.convertToAsterisks(wordToFind, ""));
+        write(output, "Parola da trovare --> ;" + FindWordManager.convertToAsterisks(wordToFind, ""));
 
         while (true) {
             received = read();
