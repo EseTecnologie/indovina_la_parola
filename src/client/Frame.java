@@ -77,7 +77,7 @@ public class Frame extends JFrame {
         lableGioco.setForeground(Color.red);
         lableGioco.setFont(new Font("Comic sans", Font.BOLD, 32));
         lableGioco.setHorizontalAlignment(JLabel.CENTER);
-        lableGioco.setBounds(300,200, 200, 30);
+        lableGioco.setBounds(250,200, 300, 30);
 
         JButton bGioco = new JButton("invia");
         bGioco.setSize(100,50);
