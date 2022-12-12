@@ -31,29 +31,20 @@ public class client {
         }catch(IOException ex){
             log("Client : " + ex.getMessage());
         }
-        readMessageThread();
 
     }
-    private void readMessageThread(){
-        Thread readMessage = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                while(true){
+    public String readMessageThread(){
+                String msg="";
                     try{
-                        String msg = input.readUTF();
+                        msg = input.readUTF();
                         log(msg);
                     }catch(IOException ex){
                         log("readMessageThread : " + ex.getMessage());
                     }
-
-                }
-            }
-        });
-        readMessage.start ();
+                    return msg;
     }
 
-    private void writeMessageThread(String msg){
+    public void writeMessageThread(String msg){
                     try{
                         output.writeUTF(msg);
                     }catch(IOException ex){
