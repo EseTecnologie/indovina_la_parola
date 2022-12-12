@@ -5,10 +5,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class Frame extends JFrame {
     JPanel panel ;
@@ -17,7 +15,7 @@ public class Frame extends JFrame {
     client c;
     Frame(){
         super("INDOVINA LA PAROLA");
-        client c= new client();
+
       panel = new JPanel(){
             @Override
             public void paintComponent(Graphics g) {
@@ -32,28 +30,47 @@ public class Frame extends JFrame {
             }
         };
 
-         JLabel label = new JLabel("INDOVINA LA PAROLA");
+        JLabel Nome = new JLabel("Username:");
+        Nome.setForeground(Color.red);
+        Nome.setFont(new Font("Comic sans", Font.BOLD, 16));
+        Nome.setBounds(10,10, 200, 30);
+        panel.add(Nome);
+
+        JTextField fUser = new JTextField();
+        fUser.setSize(100,30);
+        fUser.setLocation(120,10);
+        panel.add(fUser);
+
+        JButton BUsername = new JButton("salva");
+        BUsername.setSize(85,30);
+        BUsername.setFont(new Font("Comic sans", Font.BOLD, 16));
+        BUsername.setForeground(Color.white);
+        BUsername.setBackground(Color.red);
+        BUsername.setLocation(230,10);
+        panel.add(BUsername);
+
+        JLabel label = new JLabel("INDOVINA LA PAROLA");
          label.setForeground(Color.red);
          label.setFont(new Font("Comic sans", Font.BOLD, 32));
          Dimension size = label.getPreferredSize();
          label.setBounds(400-size.width/2,150-size.height/2, size.width, size.height);
          panel.add(label);
 
-         JButton button = new JButton("Gioca");
-         button.setSize(100,50);
-         button.setFont(new Font("Comic sans", Font.BOLD, 20));
-         button.setForeground(Color.white);
-         button.setBackground(Color.red);
-         button.setLocation(650/2-100/2,400);
-         panel.add(button);
+         JButton bPageGioco = new JButton("Gioca");
+         bPageGioco.setSize(100,50);
+         bPageGioco.setFont(new Font("Comic sans", Font.BOLD, 20));
+         bPageGioco.setForeground(Color.white);
+         bPageGioco.setBackground(Color.red);
+         bPageGioco.setLocation(650/2-100/2,400);
+         panel.add(bPageGioco);
 
-         JButton b =new JButton("Classifica");
-         b.setSize(150,50);
-         b.setFont(new Font("Comic sans", Font.BOLD, 20));
-         b.setForeground(Color.white);
-         b.setBackground(Color.red);
-         b.setLocation(950/2-100/2,400);
-         panel.add(b);
+         JButton bClassifica =new JButton("Classifica");
+         bClassifica.setSize(150,50);
+         bClassifica.setFont(new Font("Comic sans", Font.BOLD, 20));
+         bClassifica.setForeground(Color.white);
+         bClassifica.setBackground(Color.red);
+         bClassifica.setLocation(950/2-100/2,400);
+         panel.add(bClassifica);
 
          panel.setLayout(null);
 
@@ -72,6 +89,79 @@ public class Frame extends JFrame {
                 g.drawImage(img,0,0,null);
             }
         };
+
+
+        classifica = new JPanel();
+
+         getContentPane().add(panel);
+         setSize(800,500);
+         setLocationRelativeTo(null);
+         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         setResizable(false);
+         setVisible(true);
+        c= new client();
+
+        String result=c.readMessageThread();
+
+        String parola=c.readMessageThread();
+
+
+         bPageGioco.addActionListener(new ActionListener(){
+             @Override
+            public void actionPerformed(ActionEvent e){
+                 getContentPane().removeAll();
+                 /*String msg="#parola";
+                 c.writeMessageThread(msg);
+                 String parola=c.readMessageThread();*/
+                 gioco.removeAll();
+                 String[] s=parola.split(";");
+                 writeGioco(s[1]);
+                 getContentPane().add(gioco);
+                 revalidate();
+                 getContentPane().repaint();
+
+
+            }
+
+         });
+
+         bClassifica.addActionListener(new ActionListener(){
+             @Override
+             public void actionPerformed(ActionEvent e){
+                 getContentPane().removeAll();
+                 classifica.removeAll();
+                 String msg="#classifica";
+                 c.writeMessageThread(msg);
+                 String result=c.readMessageThread();
+                 writeClassifica(result);
+                 getContentPane().add(classifica);
+                 revalidate();
+                 getContentPane().repaint();
+
+             }
+
+         });
+
+
+
+
+
+
+        BUsername.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if(fUser.getText().trim()!="") {
+                    String msg = fUser.getText().trim();
+                    panel.remove(fUser);
+                    panel.remove(BUsername);
+                    Nome.setText(msg);
+                    revalidate();
+                    //c.writeMessageThread("#Username:"+msg);
+                }
+            }
+        });
+    }
+    public void writeGioco(String parola){
         JLabel lableGioco = new JLabel("M***");
         lableGioco.setForeground(Color.red);
         lableGioco.setFont(new Font("Comic sans", Font.BOLD, 32));
@@ -86,7 +176,7 @@ public class Frame extends JFrame {
         bGioco.setLocation(500,400);
         gioco.add(bGioco);
 
-        JButton bstop = new JButton("stop");
+        JButton bstop = new JButton("Logout");
         bstop.setSize(100,50);
         bstop.setFont(new Font("Comic sans", Font.BOLD, 20));
         bstop.setForeground(Color.white);
@@ -102,8 +192,49 @@ public class Frame extends JFrame {
         f.setLocation(200,400);
         gioco.add(f);
 
+        JLabel win = new JLabel("");
+        win.setForeground(Color.orange);
+        win.setFont(new Font("Comic sans", Font.BOLD, 48));
+        win.setHorizontalAlignment(JLabel.CENTER);
+        win.setBounds(300,280, 200, 30);
+        gioco.add(win);
 
-        classifica = new JPanel();
+        lableGioco.setText(parola);
+        bGioco.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if(f.getText().trim()!="") {
+                    String msg = f.getText().trim();
+                    c.writeMessageThread(msg);
+                    String result = c.readMessageThread();
+                    String[] s = result.split(";");
+                    lableGioco.setText(s[1]);
+                    if(s[0].trim().equals("win")){
+                        win.setText("WIN");
+                        f.setEnabled(false);
+                        gioco.remove(bGioco);
+                        revalidate();
+                        repaint();
+                    }
+                }
+
+            }
+
+        });
+
+        bstop.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                getContentPane().removeAll();
+                getContentPane().add(panel);
+                revalidate();
+                getContentPane().repaint();
+            }
+
+        });
+    }
+
+    public void writeClassifica(String classi){
         JButton bhome= new JButton("home");
         bhome.setSize(100,50);
         bhome.setFont(new Font("Comic sans", Font.BOLD, 20));
@@ -145,14 +276,13 @@ public class Frame extends JFrame {
 
         classifica.add(lSecondoPosto);
 
-        JLabel lTerzosecondo = new JLabel("Andrea");
-        lTerzosecondo.setForeground(Color.red);
-        lTerzosecondo.setFont(new Font("Comic sans", Font.BOLD, 32));
-        lTerzosecondo.setBounds(475,170, 150, 50);
-        lTerzosecondo.setHorizontalAlignment(JLabel.CENTER);
+        JLabel lTerzoposto = new JLabel("Andrea");
+        lTerzoposto.setForeground(Color.red);
+        lTerzoposto.setFont(new Font("Comic sans", Font.BOLD, 32));
+        lTerzoposto.setBounds(475,170, 150, 50);
+        lTerzoposto.setHorizontalAlignment(JLabel.CENTER);
 
-
-        classifica.add(lTerzosecondo);
+        classifica.add(lTerzoposto);
 
         JLabel lElenco = new JLabel("elenco");
         lElenco.setForeground(Color.red);
@@ -165,47 +295,18 @@ public class Frame extends JFrame {
         classifica.setLayout(null);
         classifica.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-
-
-         getContentPane().add(panel);
-         setSize(800,500);
-         setLocationRelativeTo(null);
-         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         setResizable(false);
-         setVisible(true);
-
-         button.addActionListener(new ActionListener(){
-             @Override
-            public void actionPerformed(ActionEvent e){
-                 getContentPane().removeAll();
-                 getContentPane().add(gioco);
-                 revalidate();
-                 getContentPane().repaint();
+        String[] s=classi.split(";");
+        for (int i=0;i<s.length;i++){
+            if(i==0){
+                lPrimoposto.setText(s[i]);
+            }else if(i==1){
+                lSecondoPosto.setText(s[i]);
+            }else if(i==2){
+                lTerzoposto.setText(s[i]);
+            }else{
+                lElenco.setText(lElenco.getText()+"\n"+s[i]);
             }
-
-         });
-
-         b.addActionListener(new ActionListener(){
-             @Override
-             public void actionPerformed(ActionEvent e){
-                 getContentPane().removeAll();
-                 getContentPane().add(classifica);
-                 revalidate();
-                 getContentPane().repaint();
-             }
-
-         });
-
-        bstop.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                getContentPane().removeAll();
-                getContentPane().add(panel);
-                revalidate();
-                getContentPane().repaint();
-            }
-
-        });
+        }
 
         bhome.addActionListener(new ActionListener(){
             @Override
@@ -217,21 +318,5 @@ public class Frame extends JFrame {
             }
 
         });
-
-        bGioco.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                if(f.getText().trim()!=""){
-                    String msg=f.getText().trim();
-                    c.writeMessageThread(msg);
-
-                    String result=c.readMessageThread();
-                    
-                }
-            }
-
-        });
     }
-
-
 }
