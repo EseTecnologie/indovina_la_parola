@@ -219,7 +219,7 @@ public class Frame extends JFrame {
         String[] s=classi.split("\n");
         for (int i=0;i<s.length;i++){
            String part[]=s[i].split(";");
-           if(s[0].equals(" ")){
+
                if(i==0){
 
                    lPrimoposto.setText(part[0]+" n° "+part[1]);
@@ -230,8 +230,6 @@ public class Frame extends JFrame {
                }else{
                    textArea.setText(textArea.getText()+"\n"+part[0]+" n° "+part[1]);
                }
-           }
-
         }
 
         bhome.addActionListener(new ActionListener(){
