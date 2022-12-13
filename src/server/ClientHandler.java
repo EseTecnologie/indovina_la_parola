@@ -155,7 +155,6 @@ public class ClientHandler implements Runnable {
                 isLosggedIn = false;
                 return;
             }
-            log("write : " + ex.getMessage());
         }
     }
 

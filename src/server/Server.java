@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.rmi.server.LogStream.log;
+
 public class Server {
     static List<ClientHandler> clients;
     ServerSocket serverSocket;
@@ -82,9 +84,14 @@ class RankingManager{
         this.usernames = new ArrayList<String>();
     }
     public void addToRanking(String user, int score) {
-        this.ranking.add(score);
-        this.usernames.add(user);
+        if(!this.usernames.contains(user)) {
+            this.ranking.add(score);
+            this.usernames.add(user);
+        }else{
+            this.ranking.set(this.usernames.indexOf(user) ,score);
+        }
         bubbleSort(ranking, usernames);
+        System.out.println(this.ranking.toString());
     }
     public String getRankingInString(){
         if(usernames.size()!=0){
