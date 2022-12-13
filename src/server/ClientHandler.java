@@ -81,6 +81,7 @@ public class ClientHandler implements Runnable {
                     try {
                         this.wordToFind = fileConnector.getRandomLineFromFile(Constants.WORDS_FILE_PATH);
                         this.win = false;
+                        this.tentative = 0;
                         log(name + " --> " + this.wordToFind);
                         write(output, "Parola da trovare --> ;" + FindWordManager.convertToAsterisks(wordToFind, wordToFind.substring(0,2)));
                     } catch (IOException e) {
@@ -118,6 +119,7 @@ public class ClientHandler implements Runnable {
         log(name + " --> " + received);
         if (!this.win) {
             String convertedToAsterix = FindWordManager.convertToAsterisks(wordToFind, received);
+            tentative++;
             if (FindWordManager.checkWord(wordToFind, convertedToAsterix)) {
                 log("Client " + name + " win");
                 write(output, "win;" + convertedToAsterix + ";" + tentative);
@@ -125,7 +127,6 @@ public class ClientHandler implements Runnable {
                 this.win = true;
                 return;
             }
-            tentative++;
             write(output, "lose;" + convertedToAsterix + ";" + tentative);
         }
     }
