@@ -182,14 +182,14 @@ public class Frame extends JFrame {
         JLabel lPrimoposto = new JLabel("");
         lPrimoposto.setForeground(Color.red);
         lPrimoposto.setFont(new Font("Comic sans", Font.BOLD, 32));
-        lPrimoposto.setBounds(325,120, 150, 50);
+        lPrimoposto.setBounds(300,120, 200, 50);
         lPrimoposto.setHorizontalAlignment(JLabel.CENTER);
         classifica.add(lPrimoposto);
 
         JLabel lSecondoPosto = new JLabel("");
         lSecondoPosto.setForeground(Color.red);
         lSecondoPosto.setFont(new Font("Comic sans", Font.BOLD, 32));
-        lSecondoPosto.setBounds(175,145, 150, 50);
+        lSecondoPosto.setBounds(150,145, 200, 50);
         lSecondoPosto.setHorizontalAlignment(JLabel.CENTER);
 
         classifica.add(lSecondoPosto);
@@ -197,7 +197,7 @@ public class Frame extends JFrame {
         JLabel lTerzoposto = new JLabel("");
         lTerzoposto.setForeground(Color.red);
         lTerzoposto.setFont(new Font("Comic sans", Font.BOLD, 32));
-        lTerzoposto.setBounds(475,170, 150, 50);
+        lTerzoposto.setBounds(450,170, 200, 50);
         lTerzoposto.setHorizontalAlignment(JLabel.CENTER);
 
         classifica.add(lTerzoposto);
@@ -219,16 +219,17 @@ public class Frame extends JFrame {
         String[] s=classi.split("\n");
         for (int i=0;i<s.length;i++){
            String part[]=s[i].split(";");
-            if(i==0){
 
-                lPrimoposto.setText(part[0]+" n° "+part[1]);
-            }else if(i==1){
-                lSecondoPosto.setText(part[0]+" n° "+part[1]);
-            }else if(i==2){
-                lTerzoposto.setText(part[0]+" n° "+part[1]);
-            }else{
-                textArea.setText(textArea.getText()+"\n"+part[0]+" n° "+part[1]);
-            }
+               if(i==0){
+
+                   lPrimoposto.setText(part[0]+" n° "+part[1]);
+               }else if(i==1){
+                   lSecondoPosto.setText(part[0]+" n° "+part[1]);
+               }else if(i==2){
+                   lTerzoposto.setText(part[0]+" n° "+part[1]);
+               }else{
+                   textArea.setText(textArea.getText()+"\n"+part[0]+" n° "+part[1]);
+               }
         }
 
         bhome.addActionListener(new ActionListener(){
