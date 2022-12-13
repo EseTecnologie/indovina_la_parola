@@ -87,11 +87,14 @@ class RankingManager{
         bubbleSort(ranking, usernames);
     }
     public String getRankingInString(){
-        StringBuilder toReturn = new StringBuilder();
-        for (int i = 0; i < ranking.size(); i++){
-            toReturn.append(usernames.get(i)).append(";").append(ranking.get(i)).append(";\n");
+        if(usernames.size()!=0){
+            StringBuilder toReturn = new StringBuilder();
+            for (int i = 0; i < ranking.size(); i++){
+                toReturn.append(usernames.get(i)).append(";").append(ranking.get(i)).append(";\n");
+            }
+            return toReturn.toString();
         }
-        return toReturn.toString();
+       return " ; ;\n";
     }
     private static void bubbleSort(ArrayList<Integer> arr , ArrayList<String> usernames){
         int n = arr.size();
